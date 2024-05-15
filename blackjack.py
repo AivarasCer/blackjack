@@ -61,15 +61,26 @@ def get_deck():
     return deck
 
 
-def display_hands():
+def display_hands(player_hand, dealer_hand, show_dealer_hand):
+    """Show the player's and the dealer's cards. Hide the dealer's first card if ShowDealer is False"""
+    print()
+    if show_dealer_hand:
+        print('DEALER:', get_hand_value(dealer_hand))
+        display_cards(dealer_hand)
+    else:
+        print('DEALER: ???')
+        # Hide the dealer's first card.
+        display_cards([BACKSIDE] + dealer_hand[1:])
+
+    print('PLAYER:', get_hand_value(player_hand))
+    display_cards(player_hand)
+
+
+def get_hand_value(cards):
     pass
 
 
-def get_hand_value():
-    pass
-
-
-def display_cards():
+def display_cards(cards):
     pass
 
 
