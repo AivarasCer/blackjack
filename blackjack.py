@@ -33,7 +33,7 @@ def main():
 
 
 def get_bet(max_bet):
-    """Ask player how moch to bet for this round"""
+    """Ask player how much to bet for this round."""
     while True:
         print('How much do you bet? (1-{}, or QUIT'.format(max_bet))
         bet = input('> ').upper().strip()
@@ -50,7 +50,15 @@ def get_bet(max_bet):
 
 
 def get_deck():
-    pass
+    """Return a list of tuples for all 52 cards."""
+    deck = []
+    for suit in (HEARTS, DIAMONDS, SPADES, CLUBS):
+        for rank in range(2, 11):
+            deck.append((str(rank), suit))
+        for rank in ('J', 'Q', 'K', 'A'):
+            deck.append((rank, suit))
+    random.shuffle(deck)
+    return deck
 
 
 def display_hands():
