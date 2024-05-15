@@ -25,9 +25,28 @@ def main():
 
     money = 5000
 
+    while True:
+        if money <= 0:
+            print("You're broke!")
+            print('Thanks for playing!')
+            sys.exit()
 
-def get_bet():
-    pass
+
+def get_bet(max_bet):
+    """Ask player how moch to bet for this round"""
+    while True:
+        print('How much do you bet? (1-{}, or QUIT'.format(max_bet))
+        bet = input('> ').upper().strip()
+        if bet == 'QUIT':
+            print('Thanks for playing!')
+            sys.exit()
+
+        if not bet.isdecimal():
+            continue
+
+        bet = int(bet)
+        if 1 <= bet <= max_bet:
+            return bet
 
 
 def get_deck():
