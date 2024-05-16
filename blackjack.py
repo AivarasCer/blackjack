@@ -31,14 +31,14 @@ def main():
             print('Thanks for playing!')
             sys.exit()
 
-        print('Money:', money)
+        print(f'Money: ${money}')
         bet = get_bet(money)
 
         deck = get_deck()
         dealer_hand = [deck.pop(), deck.pop()]
         player_hand = [deck.pop(), deck.pop()]
 
-        print('Bet:', bet)
+        print(f'Bet: ${bet}')
         while True:
             display_hands(player_hand, dealer_hand, False)
             print()
@@ -97,24 +97,26 @@ def main():
 
         input('Press Enter to continue...')
         print('\n\n')
-        continue
 
 
 def get_bet(max_bet):
     """Ask player how much to bet for this round."""
     while True:
-        print('How much do you bet? (1-{}, or QUIT'.format(max_bet))
+        print(f'How much do you bet? (1-{max_bet}), or type QUIT to exit.')
         bet = input('> ').upper().strip()
         if bet == 'QUIT':
             print('Thanks for playing!')
             sys.exit()
 
         if not bet.isdecimal():
+            print('Invalid input. Please enter a number.')
             continue
 
         bet = int(bet)
         if 1 <= bet <= max_bet:
             return bet
+        else:
+            print(f'Invalid bet amount. Please enter a number between 1 and {max_bet}.')
 
 
 def get_deck():
