@@ -51,7 +51,7 @@ def main():
             if move == 'D':
                 additional_bet = get_bet(min(bet, (money - bet)))
                 bet += additional_bet
-                print(f'Bet increased to {bet}')
+                print(f'Bet increased to ${bet}')
                 print('Bet', bet)
 
             if move in ('H', 'D'):
@@ -197,11 +197,14 @@ def get_move(player_hand, money):
             moves.append('(D)ouble down')
 
         move_prompt = ', '.join(moves) + '> '
-        move = input(move_prompt).upper()
-        if move in ('H', 'S'):
-            return move
-        if move == 'D' and '(D)ouble down' in moves:
-            return move
+        move = input(move_prompt).upper().strip()
+        if move in ('H', 'S', 'D'):
+            if move == 'D' and '(D)ouble down' not in moves:
+                print('Invalid move. You cannot double down at this time.')
+            else:
+                return move
+        else:
+            print('Invalid move. Please enter H, S, or D.')
 
 
 if __name__ == '__main__':
