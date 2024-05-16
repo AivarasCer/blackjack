@@ -76,6 +76,7 @@ def main():
                     break
                 input('Press Enter to continue...')
                 print('\n\n')
+                continue
 
         display_hands(player_hand, dealer_hand, False)
 
@@ -96,6 +97,7 @@ def main():
 
         input('Press Enter to continue...')
         print('\n\n')
+        continue
 
 
 def get_bet(max_bet):
