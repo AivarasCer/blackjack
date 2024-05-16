@@ -51,8 +51,7 @@ def main():
             if move == 'D':
                 additional_bet = get_bet(min(bet, (money - bet)))
                 bet += additional_bet
-                print(f'Bet increased to ${bet}')
-                print('Bet', bet)
+                print(f'Your total bet increased to ${bet}')
 
             if move in ('H', 'D'):
                 new_card = deck.pop()
@@ -78,7 +77,7 @@ def main():
                 print('\n\n')
                 continue
 
-        display_hands(player_hand, dealer_hand, False)
+        display_hands(player_hand, dealer_hand, True)
 
         player_value = get_hand_value(player_hand)
         dealer_value = get_hand_value(dealer_hand)
@@ -95,6 +94,7 @@ def main():
         elif player_value == dealer_value:
             print('It\'s a tie, the bet is returned to you.')
 
+        print(f'Your current balance is now ${money}')
         input('Press Enter to continue...')
         print('\n\n')
 
