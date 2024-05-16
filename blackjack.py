@@ -10,6 +10,8 @@ BACKSIDE = 'backside'
 
 def main():
     print('''
+    Welcome to Blackjack!
+
     Rules:
         Try to get as close to 21 without going over.
         Kings, Queens, and Jacks are worth 10 points.
@@ -21,6 +23,8 @@ def main():
         but must hit exactly one more time before standing.
         In case of a tie, the bet is returned to the player.
         The dealer stops hitting at 17.
+        
+    Let's start the game!
     ''')
 
     money = 5000
@@ -31,14 +35,14 @@ def main():
             print('Thanks for playing!')
             sys.exit()
 
-        print(f'Money: ${money}')
+        print(f'\nYour current balance: ${money}')
         bet = get_bet(money)
 
         deck = get_deck()
         dealer_hand = [deck.pop(), deck.pop()]
         player_hand = [deck.pop(), deck.pop()]
 
-        print(f'Bet: ${bet}')
+        print(f'Your bet: ${bet}')
         while True:
             display_hands(player_hand, dealer_hand, False)
             print()
@@ -83,14 +87,11 @@ def main():
         dealer_value = get_hand_value(dealer_hand)
 
         if dealer_value > 21:
-            print(f'Dealer busts! You win ${bet}')
-            money += bet
+            money = update_money(money, bet, "win")
         elif (player_value > 21) or (player_value < dealer_value):
-            print('You lost!')
-            money -= bet
+            money = update_money(money, bet, "lose")
         elif player_value > dealer_value:
-            print(f'You won ${bet}')
-            money += bet
+            money = update_money(money, bet, "win")
         elif player_value == dealer_value:
             print('It\'s a tie, the bet is returned to you.')
 
@@ -101,22 +102,27 @@ def main():
 
 def get_bet(max_bet):
     """Ask player how much to bet for this round."""
+    return get_valid_input(
+        prompt=f'How much do you bet? (1-{max_bet}), or type QUIT to exit.',
+        error_message=f'Invalid bet amount. Please enter a number between 1 and {max_bet}.',
+        validation=lambda x: x.isdecimal() and 1 <= int(x) <= max_bet,
+        convert=int
+    )
+
+
+def get_valid_input(prompt, error_message, validation, convert=lambda x: x):
+    """General function to get valid input from the user."""
     while True:
-        print(f'How much do you bet? (1-{max_bet}), or type QUIT to exit.')
-        bet = input('> ').upper().strip()
-        if bet == 'QUIT':
+        print(prompt)
+        response = input('> ').upper().strip()
+        if response == 'QUIT':
             print('Thanks for playing!')
             sys.exit()
 
-        if not bet.isdecimal():
-            print('Invalid input. Please enter a number.')
-            continue
-
-        bet = int(bet)
-        if 1 <= bet <= max_bet:
-            return bet
+        if validation(response):
+            return convert(response)
         else:
-            print(f'Invalid bet amount. Please enter a number between 1 and {max_bet}.')
+            print(error_message)
 
 
 def get_deck():
@@ -192,19 +198,28 @@ def get_move(player_hand, money):
     """Asks the player for their move, and returns 'H' for hit, 'S' for stand, and 'D' for double down."""
     while True:
         moves = ['(H)it', '(S)tand']
-
         if len(player_hand) == 2 and money > 0:
             moves.append('(D)ouble down')
 
-        move_prompt = ', '.join(moves) + '> '
-        move = input(move_prompt).upper().strip()
-        if move in ('H', 'S', 'D'):
-            if move == 'D' and '(D)ouble down' not in moves:
-                print('Invalid move. You cannot double down at this time.')
-            else:
-                return move
-        else:
-            print('Invalid move. Please enter H, S, or D.')
+        return get_valid_input(
+            prompt=', '.join(moves) + '> ',
+            error_message='Invalid move. Please enter H, S, or D.',
+            validation=lambda x: x in ('H', 'S', 'D') and not (x == 'D' and '(D)ouble down' not in moves)
+        )
+
+
+def update_money(money, bet, result):
+    """Update and display the player's money based on the game result."""
+    if result == "win":
+        print(f'Dealer busts! You win ${bet}')
+        money += bet
+    elif result == "lose":
+        print('You lost!')
+        money -= bet
+    elif result == "win":
+        print(f'You won ${bet}')
+        money += bet
+    return money
 
 
 if __name__ == '__main__':
