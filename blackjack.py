@@ -23,6 +23,7 @@ def main():
         but must hit exactly one more time before standing.
         In case of a tie, the bet is returned to the player.
         The dealer stops hitting at 17.
+        5-Card Charlie: Draw five cards without busting to win automatically.
         
     Let's start the game!
     ''')
@@ -40,7 +41,7 @@ def main():
 
         deck = get_deck()
         dealer_hand = [deck.pop(), deck.pop()]
-        player_hand = [deck.pop(), deck.pop()]
+        player_hand = [deck.pop(), deck.pop()]100
 
         print(f'Your bet: ${bet}')
         while True:
@@ -48,6 +49,11 @@ def main():
             print()
 
             if get_hand_value(player_hand) > 21:
+                break
+
+            if len(player_hand) == 5 and get_hand_value(player_hand) <= 21:
+                print('5-Card Charlie! You automatically win.')
+                money += bet
                 break
 
             move = get_move(player_hand, money - bet)
@@ -62,6 +68,11 @@ def main():
                 rank, suit = new_card
                 print(f'You drew a {rank} of {suit}.')
                 player_hand.append(new_card)
+
+                if len(player_hand) == 5 and get_hand_value(player_hand) <= 21:
+                    print('5-Card Charlie! You automatically win.')
+                    money += bet
+                    break
 
                 if get_hand_value(player_hand) > 21:
                     continue
