@@ -41,7 +41,7 @@ def main():
 
         deck = get_deck()
         dealer_hand = [deck.pop(), deck.pop()]
-        player_hand = [deck.pop(), deck.pop()]100
+        player_hand = [deck.pop(), deck.pop()]
 
         print(f'Your bet: ${bet}')
         while True:
